@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package echov4
+package goelasticsearchv7
 
 import (
 	"embed"
@@ -45,6 +45,10 @@ func (i *Instrument) VersionChecker(version string) bool {
 	return strings.HasPrefix(version, "v4.")
 }
 
+func (i *Instrument) FS() *embed.FS {
+	return &fs
+}
+
 func (i *Instrument) Points() []*instrument.Point {
 	return []*instrument.Point{
 		{
@@ -57,8 +61,4 @@ func (i *Instrument) Points() []*instrument.Point {
 			Interceptor: "EchoInterceptor",
 		},
 	}
-}
-
-func (i *Instrument) FS() *embed.FS {
-	return &fs
 }
