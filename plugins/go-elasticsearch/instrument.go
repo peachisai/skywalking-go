@@ -38,21 +38,17 @@ func (i *Instrument) Name() string {
 }
 
 func (i *Instrument) BasePackage() string {
-	return "github.com/labstack/echo/v4"
+	return "github.com/elastic/go-elasticsearch/v7"
 }
 
 func (i *Instrument) VersionChecker(version string) bool {
-	return strings.HasPrefix(version, "v4.")
-}
-
-func (i *Instrument) FS() *embed.FS {
-	return &fs
+	return strings.HasPrefix(version, "v7.")
 }
 
 func (i *Instrument) Points() []*instrument.Point {
 	return []*instrument.Point{
 		{
-			PackageName: "echo",
+			PackageName: "esapi",
 			PackagePath: "",
 			At: instrument.NewStaticMethodEnhance("New",
 				instrument.WithResultCount(1),
@@ -61,4 +57,8 @@ func (i *Instrument) Points() []*instrument.Point {
 			Interceptor: "EchoInterceptor",
 		},
 	}
+}
+
+func (i *Instrument) FS() *embed.FS {
+	return &fs
 }

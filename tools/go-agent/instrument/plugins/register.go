@@ -26,7 +26,7 @@ import (
 	fasthttp_router "github.com/apache/skywalking-go/plugins/fasthttp/router"
 	"github.com/apache/skywalking-go/plugins/fiber"
 	"github.com/apache/skywalking-go/plugins/gin"
-	goelasticsearchv7 "github.com/apache/skywalking-go/plugins/go-elasticsearch"
+	goelasticsearchv7 "github.com/apache/skywalking-go/plugins/go-elasticsearchv7"
 	goredisv9 "github.com/apache/skywalking-go/plugins/go-redisv9"
 	"github.com/apache/skywalking-go/plugins/go-restfulv3"
 	gorm_entry "github.com/apache/skywalking-go/plugins/gorm/entry"
