@@ -19,28 +19,38 @@ package goelasticsearchv7
 
 import (
 	"fmt"
-
 	"github.com/labstack/echo/v4"
 
+	"github.com/apache/skywalking-go/plugins/core/log"
 	"github.com/apache/skywalking-go/plugins/core/operator"
 	"github.com/apache/skywalking-go/plugins/core/tracing"
+	es "github.com/elastic/go-elasticsearch/v7"
 )
 
 type EchoInterceptor struct{}
 
 // BeforeInvoke would be called before the target method invocation.
 func (h *EchoInterceptor) BeforeInvoke(invocation operator.Invocation) error {
+	config := invocation.Args()[0].(es.Config)
+	addresses := config.Addresses
+	span, err := tracing.CreateExitSpan("testGolang", addresses[0], func(headerKey, headerValue string) error {
+		return nil
+	}, tracing.WithComponent(42),
+		tracing.WithLayer(tracing.SpanLayerDatabase),
+		tracing.WithTag(tracing.TagDBType, "Elasticsearch"))
+
+	if err != nil {
+		log.Warnf("cannot create exit span on elasticsearch client: %v", err)
+		return nil
+	}
+	invocation.SetContext(span)
 	return nil
 }
 
 // AfterInvoke would be called after the target method invocation.
 func (h *EchoInterceptor) AfterInvoke(invocation operator.Invocation, result ...interface{}) error {
-	e, ok := result[0].(*echo.Echo)
-	if !ok {
-		return fmt.Errorf("echo :hera cannot create middleware for echo not match *Echo: %T", e)
-	}
-
-	e.Use(middleware())
+	span := invocation.GetContext().(tracing.Span)
+	span.End()
 	return nil
 }
 

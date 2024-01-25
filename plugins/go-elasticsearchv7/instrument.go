@@ -38,7 +38,7 @@ func (i *Instrument) Name() string {
 }
 
 func (i *Instrument) BasePackage() string {
-	return "github.com/elastic/go-elasticsearch/v7"
+	return "github.com/elastic/go-elasticsearchv7/v7"
 }
 
 func (i *Instrument) VersionChecker(version string) bool {
@@ -50,9 +50,9 @@ func (i *Instrument) Points() []*instrument.Point {
 		{
 			PackageName: "esapi",
 			PackagePath: "",
-			At: instrument.NewStaticMethodEnhance("New",
-				instrument.WithResultCount(1),
-				instrument.WithResultType(0, "*Echo"),
+			At: instrument.NewStaticMethodEnhance("NewClient",
+				instrument.WithResultCount(2),
+				instrument.WithResultType(0, "*Client"),
 			),
 			Interceptor: "EchoInterceptor",
 		},
