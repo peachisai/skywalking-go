@@ -34,7 +34,7 @@ func NewInstrument() *Instrument {
 }
 
 func (i *Instrument) Name() string {
-	return "echov4"
+	return "go-elasticsearchv9"
 }
 
 func (i *Instrument) BasePackage() string {
@@ -54,7 +54,7 @@ func (i *Instrument) Points() []*instrument.Point {
 				instrument.WithResultCount(2),
 				instrument.WithResultType(0, "*Client"),
 			),
-			Interceptor: "EchoInterceptor",
+			Interceptor: "GoElasticsearchInterceptor",
 		},
 	}
 }

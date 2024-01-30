@@ -23,6 +23,7 @@ use (
 	./plugins/fasthttp
 	./plugins/fiber
 	./plugins/echov4
+	./plugins/go-elasticsearchv7
 
 	./test/benchmark-codebase/consumer
 	./test/benchmark-codebase/provider

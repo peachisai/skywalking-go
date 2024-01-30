@@ -18,19 +18,16 @@
 package goelasticsearchv7
 
 import (
-	"fmt"
-	"github.com/labstack/echo/v4"
-
 	"github.com/apache/skywalking-go/plugins/core/log"
 	"github.com/apache/skywalking-go/plugins/core/operator"
 	"github.com/apache/skywalking-go/plugins/core/tracing"
 	es "github.com/elastic/go-elasticsearch/v7"
 )
 
-type EchoInterceptor struct{}
+type GoElasticsearchInterceptor struct{}
 
 // BeforeInvoke would be called before the target method invocation.
-func (h *EchoInterceptor) BeforeInvoke(invocation operator.Invocation) error {
+func (h *GoElasticsearchInterceptor) BeforeInvoke(invocation operator.Invocation) error {
 	config := invocation.Args()[0].(es.Config)
 	addresses := config.Addresses
 	span, err := tracing.CreateExitSpan("testGolang", addresses[0], func(headerKey, headerValue string) error {
@@ -48,38 +45,8 @@ func (h *EchoInterceptor) BeforeInvoke(invocation operator.Invocation) error {
 }
 
 // AfterInvoke would be called after the target method invocation.
-func (h *EchoInterceptor) AfterInvoke(invocation operator.Invocation, result ...interface{}) error {
+func (h *GoElasticsearchInterceptor) AfterInvoke(invocation operator.Invocation, result ...interface{}) error {
 	span := invocation.GetContext().(tracing.Span)
 	span.End()
 	return nil
-}
-
-func middleware() echo.MiddlewareFunc {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			request := c.Request()
-			span, err := tracing.CreateEntrySpan(
-				request.Method+":"+c.Path(),
-				func(headerKey string) (string, error) {
-					return request.Header.Get(headerKey), nil
-				},
-				tracing.WithLayer(tracing.SpanLayerHTTP),
-				tracing.WithTag(tracing.TagHTTPMethod, request.Method),
-				tracing.WithTag(tracing.TagURL, request.Host+request.URL.Path),
-				tracing.WithComponent(5015))
-			if err != nil {
-				return err
-			}
-
-			// serve the request to the next middleware
-			if err = next(c); err != nil {
-				span.Error(err.Error())
-				// invokes the registered HTTP error handler
-				c.Error(err)
-			}
-			span.Tag(tracing.TagStatusCode, fmt.Sprintf("%d", c.Response().Status))
-			span.End()
-			return nil
-		}
-	}
 }
