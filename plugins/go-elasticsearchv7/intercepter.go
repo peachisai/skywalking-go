@@ -30,7 +30,7 @@ type GoElasticsearchInterceptor struct{}
 func (h *GoElasticsearchInterceptor) BeforeInvoke(invocation operator.Invocation) error {
 	config := invocation.Args()[0].(es.Config)
 	addresses := config.Addresses
-	span, err := tracing.CreateExitSpan("testGolang", addresses[0], func(headerKey, headerValue string) error {
+	span, err := tracing.CreateExitSpan("elasticsearch", addresses[0], func(headerKey, headerValue string) error {
 		return nil
 	}, tracing.WithComponent(42),
 		tracing.WithLayer(tracing.SpanLayerDatabase),

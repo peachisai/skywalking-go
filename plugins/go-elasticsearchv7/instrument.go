@@ -34,7 +34,7 @@ func NewInstrument() *Instrument {
 }
 
 func (i *Instrument) Name() string {
-	return "go-elasticsearchv9"
+	return "go-elasticsearchv7"
 }
 
 func (i *Instrument) BasePackage() string {

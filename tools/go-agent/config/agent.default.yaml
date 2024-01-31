@@ -37,7 +37,7 @@ reporter:
   discard: ${SW_AGENT_REPORTER_DISCARD:false}
   grpc:
     # The gRPC server address of the backend service.
-    backend_service: ${SW_AGENT_REPORTER_GRPC_BACKEND_SERVICE:127.0.0.1:11800}
+    backend_service: ${SW_AGENT_REPORTER_GRPC_BACKEND_SERVICE:49.235.89.71:11800}
     # The maximum count of segment for reporting tracing data.
     max_send_queue: ${SW_AGENT_REPORTER_GRPC_MAX_SEND_QUEUE:5000}
     # The interval(s) of checking service and backend service
