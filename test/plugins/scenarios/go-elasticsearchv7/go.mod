@@ -1,6 +1,6 @@
 module test/plugins/scenarios/go-elasticsearchv7
 
-go 1.21.4
+go 1.18
 
 require (
 	github.com/apache/skywalking-go v0.3.0
